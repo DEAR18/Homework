@@ -35,12 +35,17 @@ problem.AddObservation((base_station2, measure2, bs2_measure_cov))
 problem.AddObservation((base_station3, measure3, bs3_measure_cov))
 problem.AddObservation((base_station4, measure4, bs4_measure_cov))
 
+# calculate PEB
+peb = problem.CalPEB(true_vehicle_state)
+
 # initialize a visualizer
 vis = Visualizer()
 vis.AddBaseStation((base_station1, truth_measure1, measure1, bs1_measure_cov))
 vis.AddBaseStation((base_station2, truth_measure2, measure2, bs2_measure_cov))
 vis.AddBaseStation((base_station3, truth_measure3, measure3, bs3_measure_cov))
 vis.AddBaseStation((base_station4, truth_measure4, measure4, bs4_measure_cov))
+vis.SetTruthVehicleState(true_vehicle_state)
+vis.SetEstimationPEB(peb)
 vis.Show()
 
 # state optimization

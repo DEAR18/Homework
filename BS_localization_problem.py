@@ -99,6 +99,15 @@ class BSLocProblem:
         if (len(self.state_update_history_) > 3):
             self.state_update_history_ = self.state_update_history_[1:]
 
+    def CalPEB(self, state: Point2d) -> float:
+        jacobian = self.CalJacobian(state)
+        measure_cov = self.GetMeasureCov()
+        measure_cov_inv = np.linalg.inv(measure_cov)
+        fisher = jacobian.T @ measure_cov_inv @ jacobian
+        fisher_inv = np.linalg.inv(fisher)
+        peb = np.sqrt(fisher_inv[0][0] + fisher_inv[1][1])
+        return peb
+
     def IsConvergent(self, threshold: float) -> bool:
         sum_state_update = Point2d(0, 0)
         for item in self.state_update_history_:
